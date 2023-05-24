@@ -126,16 +126,10 @@ class TransactionSearchDelegate extends SearchDelegate<String> {
   TransactionSearchDelegate(this.transactions);
 
   @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-  icon: Icon(context.platformIcons.back),
-  onPressed: () {
-    close(context, '');
-  },
-),
-    ];
-  }
+List<Widget> buildActions(BuildContext context) {
+  return []; // Empty list
+}
+
 
   @override
   Widget buildLeading(BuildContext context) {
