@@ -46,7 +46,7 @@ class TransactionDetailsScreen extends StatelessWidget {
                        const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Amount: ${transaction['amount']} ${transaction['currency']}',
+                    'Amount: ${transaction['amount']}',
                     style:
                       const  TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),

@@ -140,69 +140,70 @@ List<Widget> buildActions(BuildContext context) {
       },
     );
   }
+@override
+Widget buildResults(BuildContext context) {
+  final List<dynamic> filteredTransactions = query.isEmpty
+      ? []
+      : transactions
+          .where((transaction) =>
+              transaction['type']
+                  .toString()
+                  .toLowerCase()
+                  .contains(query.toLowerCase()))
+          .toList();
 
-  @override
-  Widget buildResults(BuildContext context) {
-    final List<dynamic> filteredTransactions = query.isEmpty
-        ? []
-        : transactions
-            .where((transaction) =>
-                transaction['type']
-                    .toString()
-                    .toLowerCase()
-                    .contains(query.toLowerCase()))
-            .toList();
+  return ListView.builder(
+    key: Key(query), // Add a key to the ListView.builder
+    itemCount: filteredTransactions.length,
+    itemBuilder: (context, index) {
+      final transaction = filteredTransactions[index];
+      final transactionDate = DateTime.parse(transaction['date']);
+      final formattedDate = DateFormat('dd/MM/yyyy').format(transactionDate);
 
-    return ListView.builder(
-      itemCount: filteredTransactions.length,
-      itemBuilder: (context, index) {
-        final transaction = filteredTransactions[index];
-        final transactionDate = DateTime.parse(transaction['date']);
-        final formattedDate = DateFormat('dd/MM/yyyy').format(transactionDate);
-
-        return Container(
-          height: 120,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(10.0),
+      return Container(
+        height: 120,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        margin: const EdgeInsets.all(8.0),
+        child: ListTile(
+          title: Text(
+            'Type: ${transaction['type']}',
+            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
-          margin:const EdgeInsets.all(8.0),
-          child: ListTile(
-            title: Text(
-              'Type: ${transaction['type']}',
-              style:const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Amount: ${transaction['amount']}',
-                  style:const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'Currency: ${transaction['currency']}',
-                        style:const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                Text(
-                  'Date: $formattedDate',
-                  style:const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      TransactionDetailsScreen(transaction: transaction),
-                ),
-              );
-            },
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Amount: ${transaction['amount']}',
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Currency: ${transaction['currency']}',
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Date: $formattedDate',
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
-        );
-      },
-    );
-  }
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    TransactionDetailsScreen(transaction: transaction),
+              ),
+            );
+          },
+        ),
+      );
+    },
+  );
+}
+
 
   @override
   Widget buildSuggestions(BuildContext context) {
